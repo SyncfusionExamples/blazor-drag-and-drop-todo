@@ -1,0 +1,30 @@
+﻿<div class="taskitem" id="@TaskModel.Id.ToString()" draggable="@IsDraggable">
+    <div class="taskstate">
+        <SfRadioButton Value="@TaskModel.Status.ToString()" Checked="@TaskDone"></SfRadioButton>
+    </div>
+    <div class="taskcontent">
+        <div class="tasksummary @TaskModel.Status.ToString().ToLower()"> @TaskModel.Summary </div>
+        <div class="tasktimeline"> @TaskModel.Timeline.ToLongDateString() </div>
+    </div>
+</div>
+
+
+@code {
+    string TaskDone = "Completed";
+    string IsDraggable = "false";
+
+    [Parameter]
+    public TaskModel TaskModel { get; set; }
+
+    protected override void OnInitialized()
+    {
+        IsDraggable = TaskModel.Status == TaskStatuses.Todo ? "true" : "false";
+    }
+}
+
+<style>
+    .completed {
+        text-decoration: line-through;
+    }
+</style>
+
