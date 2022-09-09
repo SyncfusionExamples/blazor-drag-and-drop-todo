@@ -1,17 +1,28 @@
-﻿<div class="taskitem" id="@TaskModel.Id.ToString()" draggable="@IsDraggable">
-    <div class="taskstate">
-        <SfRadioButton Value="@TaskModel.Status.ToString()" Checked="@TaskDone"></SfRadioButton>
-    </div>
-    <div class="taskcontent">
-        <div class="tasksummary @TaskModel.Status.ToString().ToLower()"> @TaskModel.Summary </div>
-        <div class="tasktimeline"> @TaskModel.Timeline.ToLongDateString() </div>
-    </div>
-</div>
+﻿<SfCard>
+    <CardContent>
+        <div class="taskitem" id="@TaskModel.Id.ToString()" draggable="@IsDraggable">
+            <div class="taskstate">
+                @if (TaskModel.Status == TaskStatuses.Todo)
+                {
+                    <SfRadioButton Value="@TaskModel.Status.ToString()" ValueChange="@((ChangeArgs<string> s) => OnTaskStatusChange(s))"></SfRadioButton>
+                }
+                else
+                {
+                    <SfRadioButton Value="@TaskModel.Status.ToString()" Checked="IsCompleted" ValueChange="@((ChangeArgs<string> s) => OnTaskStatusChange(s))"></SfRadioButton>
 
+                }
+            </div>
+            <div class="taskcontent">
+                <div class="tasksummary @TaskModel.Status.ToString().ToLower()"> @TaskModel.Summary </div>
+                <div class="tasktimeline"> @TaskModel.Timeline.ToLongDateString() </div>
+            </div>
+        </div>
+    </CardContent>
+</SfCard>
 
 @code {
-    string TaskDone = "Completed";
-    string IsDraggable = "false";
+    string IsDraggable = string.Empty;
+    string IsCompleted = "Completed";
 
     [Parameter]
     public TaskModel TaskModel { get; set; }
@@ -20,6 +31,14 @@
     {
         IsDraggable = TaskModel.Status == TaskStatuses.Todo ? "true" : "false";
     }
+
+    private void OnTaskStatusChange(ChangeArgs<string> args)
+    {
+        TaskParent.OnTaskStatusChanged(TaskModel);
+    }
+
+    [CascadingParameter]
+    public ToDo TaskParent { get; set; }
 }
 
 <style>
@@ -27,4 +46,3 @@
         text-decoration: line-through;
     }
 </style>
-

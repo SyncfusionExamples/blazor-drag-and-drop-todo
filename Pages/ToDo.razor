@@ -5,28 +5,17 @@
 
 <PageTitle>Drag and Drop feature in Blazor WebAssembly</PageTitle>
 
-<div class="droptarget" ondragstart="DragStart(event,event.target.id);"
-     @ondragover="DragOver"
-     @ondragover:preventDefault="shouldPreventDefault"
-     @ondragenter:preventDefault="shouldPreventDefault"
-     @ondragleave="DragLeave"
-     @ondrop="DropCard"
-     @ondrop:preventDefault="shouldPreventDefault">
+<div class="droptarget" ondragstart="DragStart(event,event.target.id);" @ondragover="DragOver"
+     @ondragover:preventDefault="shouldPreventDefault" @ondragenter:preventDefault="shouldPreventDefault"
+     @ondragleave="DragLeave" @ondrop="DropCard" @ondrop:preventDefault="shouldPreventDefault">
 
     @foreach (var task in Tasks.FindAll(c => c.Status == TaskStatuses.Todo))
     {
-        <SfCard>
-            <CardContent>
-                <TaskDetail TaskModel="task"></TaskDetail>
-            </CardContent>
-        </SfCard>
+        <CascadingValue Value="this">
+            <TaskDetail TaskModel="task"></TaskDetail>
+        </CascadingValue>
     }
-
-    @*</div>*@
-
     <br />
-    <br />
-    @*<div>*@
     <SfAccordion>
         <AccordionItems>
             <AccordionItem Expanded=true>
@@ -36,11 +25,9 @@
                 <ContentTemplate>
                     @foreach (var task in Tasks.FindAll(c => c.Status == TaskStatuses.Completed))
                     {
-                        <SfCard>
-                            <CardContent>
-                                <TaskDetail TaskModel="task"></TaskDetail>
-                            </CardContent>
-                        </SfCard>
+                        <CascadingValue Value="this">
+                            <TaskDetail TaskModel="task"></TaskDetail>
+                        </CascadingValue>
                     }
                 </ContentTemplate>
             </AccordionItem>
@@ -53,9 +40,13 @@
 @code
 {
     private bool shouldPreventDefault = true;
-
     public static List<TaskModel> Tasks = new List<TaskModel>();
-    public static List<TaskModel> CompletedTasks = new List<TaskModel>();
+
+    public void OnTaskStatusChanged(TaskModel task)
+    {
+        Tasks.FirstOrDefault(task).Status = TaskStatuses.Completed;
+        StateHasChanged();
+    }
 
     protected override void OnInitialized()
     {
@@ -64,7 +55,6 @@
 
     private void DragOver(System.EventArgs e)
     {
-
     }
 
     private async Task DragStart(System.EventArgs e, string Id)
@@ -74,12 +64,10 @@
 
     private void DragEnter(System.EventArgs e)
     {
-
     }
 
     private void DragLeave(System.EventArgs e)
     {
-
     }
 
     private async Task DropCard(System.EventArgs e)
@@ -183,7 +171,9 @@
 }
 
 <style>
-    .taskitem, .taskstate, .taskcontent {
+    .taskitem,
+    .taskstate,
+    .taskcontent {
         display: flex;
         position: relative;
         align-items: stretch;
@@ -212,4 +202,3 @@
         border: 2px dashed lightgreen;
     }
 </style>
-
