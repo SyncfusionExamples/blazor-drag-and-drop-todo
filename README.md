@@ -1,10 +1,13 @@
-# Blazor simple Todo APP using drag-and-drop
+# A simple To-Do APP using drag-and-drop in Blazor WebAssembly
 
-This project illustrates the creation of simple Todo app using Syncfusion Blazor Card component and drag-and-drop.
+This project illustrates how to create a simple To-do app using HTML5 drag and drop API and Syncfusion Blazor components in Blazor WebAssembly.
 
 ## Prerequisites
 
 * Visual Studio 2022
+* Visual Studio Code
+
+[More details](https://blazor.syncfusion.com/documentation/system-requirements)
 
 ## Get Started
 
