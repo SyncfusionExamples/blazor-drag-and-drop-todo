@@ -3,7 +3,7 @@
 @using Syncfusion.Blazor.Navigations
 @inject IJSRuntime JSInterop
 
-<PageTitle>Drag and Drop feature in Blazor WebAssembly</PageTitle>
+<PageTitle>A simple To-Do App using Blazor WebAssembly</PageTitle>
 
 <div class="droptarget" ondragstart="DragStart(event,event.target.id);" @ondragover="DragOver"
      @ondragover:preventDefault="shouldPreventDefault" @ondragenter:preventDefault="shouldPreventDefault"
@@ -73,7 +73,7 @@
     private async Task DropCard(System.EventArgs e)
     {
         await JSInterop.InvokeVoidAsync("DropCard", e);
-        await Task.Delay(1000);
+        await Task.Delay(1500);
         StateHasChanged();
     }
 
@@ -85,9 +85,12 @@
 
         if (!IsCompleted)
         {
-            TaskModel tmp = Tasks[dropIndex];
-            Tasks[dropIndex] = Tasks[dragIndex];
-            Tasks[dragIndex] = tmp;
+        if (dropIndex != -1)
+        {
+            TaskModel task = Tasks[dragIndex];
+            Tasks.RemoveAt(dragIndex);
+            Tasks.Insert(dropIndex, task);
+        }
         }
         else
         {
