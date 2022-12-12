@@ -44,11 +44,11 @@
 
     public void OnTaskStatusChanged(TaskModel task)
     {
-        Tasks.FirstOrDefault(task).Status = TaskStatuses.Completed;
-        StateHasChanged();
+        Tasks.FirstOrDefault(x => x.Id == task.Id).Status = TaskStatuses.Completed;
+        this.StateHasChanged();
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         InitTasks();
     }
@@ -85,12 +85,12 @@
 
         if (!IsCompleted)
         {
-        if (dropIndex != -1)
-        {
-            TaskModel task = Tasks[dragIndex];
-            Tasks.RemoveAt(dragIndex);
-            Tasks.Insert(dropIndex, task);
-        }
+            if (dropIndex != -1)
+            {
+                TaskModel task = Tasks[dragIndex];
+                Tasks.RemoveAt(dragIndex);
+                Tasks.Insert(dropIndex, task);
+            }
         }
         else
         {

@@ -2,7 +2,7 @@
     <CardContent>
         <div class="taskitem" id="@TaskModel.Id.ToString()" draggable="@IsDraggable">
             <div class="taskstate">
-                <SfRadioButton Value="@TaskModel.Status.ToString()" Checked="IsCompleted" ValueChange="@((ChangeArgs<string> s) => OnTaskStatusChange(s))"></SfRadioButton>
+                <SfRadioButton Value="@TaskModel.Status.ToString()" ValueChange="@((ChangeArgs<string> s) => OnTaskStatusChange(s))"></SfRadioButton>
             </div>
             <div class="taskcontent">
                 <div class="tasksummary @TaskModel.Status.ToString().ToLower()"> @TaskModel.Summary </div>
