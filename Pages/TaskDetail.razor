@@ -1,4 +1,6 @@
-﻿<SfCard>
+﻿@using DragDrop.Models
+@using Syncfusion.Blazor.Buttons
+<SfCard>
     <CardContent>
         <div class="taskitem" id="@TaskModel.Id.ToString()" draggable="@IsDraggable">
             <div class="taskstate">
@@ -31,7 +33,7 @@
     }
 
     [CascadingParameter]
-    public ToDo TaskParent { get; set; }
+    public Home TaskParent { get; set; }
 }
 
 <style>

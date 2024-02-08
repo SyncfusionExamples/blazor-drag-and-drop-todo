@@ -1,4 +1,4 @@
-﻿namespace Blazor_WASM_Drag_and_Drop.Models
+﻿namespace DragDrop.Models
 {
     public class TaskModel
     {
